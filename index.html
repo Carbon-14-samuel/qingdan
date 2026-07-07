@@ -435,6 +435,74 @@ body {
   text-align: center;
   margin-top: 4px;
 }
+
+/* ── Mobile Responsive ─────────────────────────────── */
+@media (max-width: 480px) {
+  body { padding: 12px; }
+  
+  .header { 
+    flex-direction: column; 
+    align-items: flex-start; 
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .header-left h1 { font-size: 22px; }
+  .stats { 
+    display: flex; 
+    align-items: baseline; 
+    gap: 8px; 
+    text-align: left;
+  }
+  .stats .rate { font-size: 24px; }
+  .stats .rate-label { font-size: 12px; margin-top: 0; }
+  
+  .week-bar {
+    gap: 4px;
+    padding: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .week-bar::-webkit-scrollbar { display: none; }
+  .day-card { 
+    flex: 0 0 48px; 
+    padding: 6px 2px; 
+    min-width: 48px; 
+  }
+  .day-card .day-date { font-size: 13px; }
+  .day-card .day-week { font-size: 10px; }
+  .day-card .day-rate { font-size: 10px; }
+  
+  .add-bar { 
+    flex-wrap: wrap; 
+    padding: 10px; 
+    gap: 6px; 
+  }
+  .add-bar input[type="text"] { 
+    flex: 1 1 100%; 
+    padding: 8px 12px; 
+  }
+  .priority-select { padding: 8px 6px; font-size: 13px; }
+  .btn-add { padding: 8px 16px; font-size: 14px; }
+  
+  .color-picker { gap: 3px; }
+  .color-dot { width: 18px; height: 18px; }
+  
+  .task-item { padding: 12px 10px; gap: 10px; }
+  .task-title { font-size: 15px; }
+  .task-actions { 
+    flex-direction: row; 
+    gap: 4px; 
+    align-items: center;
+  }
+  .icon-btn { font-size: 13px; padding: 4px; }
+  
+  .time-input { width: 70px; padding: 3px 6px; font-size: 12px; }
+  .task-note { padding: 6px 10px; font-size: 13px; }
+  .badge { font-size: 11px; padding: 2px 8px; }
+  
+  .toolbar button { padding: 8px 14px; font-size: 13px; }
+}
 </style>
 </head>
 <body>
