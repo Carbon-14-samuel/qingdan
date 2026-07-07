@@ -31,7 +31,7 @@ body {
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
-  padding: 20px;
+  padding: 12px;
   font-size: 16px;
   line-height: 1.6;
 }
@@ -44,13 +44,15 @@ body {
 /* Header */
 .header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 16px;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
 }
 
 .header-left h1 {
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--accent);
   letter-spacing: 1px;
@@ -74,42 +76,50 @@ body {
 }
 
 .stats {
-  text-align: right;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  text-align: left;
 }
 
 .stats .rate {
-  font-size: 32px;
+  font-size: 24px;
   font-weight: 700;
   color: var(--accent);
   line-height: 1;
 }
 
 .stats .rate-label {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--text-light);
-  margin-top: 4px;
+  margin-top: 0;
 }
 
 /* 7天快捷条 */
 .week-bar {
   display: flex;
-  gap: 6px;
+  gap: 4px;
   margin-bottom: 18px;
   background: var(--card);
-  padding: 10px;
+  padding: 8px;
   border-radius: 12px;
   box-shadow: var(--shadow);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
 
+.week-bar::-webkit-scrollbar { display: none; }
+
 .day-card {
-  flex: 1;
+  flex: 0 0 48px;
   text-align: center;
-  padding: 8px 4px;
+  padding: 6px 2px;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s;
   border: 2px solid transparent;
-  min-width: 0;
+  min-width: 48px;
 }
 
 .day-card:hover { background: var(--accent-light); }
@@ -123,18 +133,18 @@ body {
 .day-card.active .day-rate { color: #fff; }
 
 .day-card .day-date {
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 600;
 }
 
 .day-card .day-week {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--text-light);
   margin: 2px 0;
 }
 
 .day-card .day-rate {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--green);
   font-weight: 600;
 }
@@ -142,19 +152,20 @@ body {
 /* Add task bar */
 .add-bar {
   display: flex;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: 6px;
   margin-bottom: 16px;
   background: var(--card);
-  padding: 14px;
+  padding: 10px;
   border-radius: 12px;
   box-shadow: var(--shadow);
 }
 
 .add-bar input[type="text"] {
-  flex: 1;
+  flex: 1 1 100%;
   border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 10px 14px;
+  padding: 8px 12px;
   font-size: 15px;
   outline: none;
   transition: border-color 0.2s;
@@ -167,8 +178,8 @@ body {
 .priority-select {
   border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 10px 10px;
-  font-size: 14px;
+  padding: 8px 6px;
+  font-size: 13px;
   background: var(--card);
   cursor: pointer;
   color: var(--text);
@@ -179,8 +190,8 @@ body {
   color: #fff;
   border: none;
   border-radius: 8px;
-  padding: 10px 22px;
-  font-size: 15px;
+  padding: 8px 16px;
+  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   transition: opacity 0.2s;
@@ -192,13 +203,14 @@ body {
 .color-picker {
   display: flex;
   align-items: center;
-  gap: 5px;
+  flex-wrap: wrap;
+  gap: 3px;
   flex-shrink: 0;
 }
 
 .color-dot {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   cursor: pointer;
   border: 2px solid transparent;
@@ -226,11 +238,11 @@ body {
 .task-item {
   background: var(--card);
   border-radius: 12px;
-  padding: 16px 18px;
+  padding: 12px 10px;
   box-shadow: var(--shadow);
   display: flex;
   align-items: flex-start;
-  gap: 14px;
+  gap: 10px;
   transition: all 0.2s;
   border-left: 4px solid transparent;
 }
@@ -281,7 +293,7 @@ body {
 }
 
 .task-title {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   line-height: 1.5;
   word-break: break-word;
@@ -297,8 +309,8 @@ body {
 
 /* Priority badge */
 .badge {
-  font-size: 12px;
-  padding: 3px 10px;
+  font-size: 11px;
+  padding: 2px 8px;
   border-radius: 12px;
   font-weight: 500;
   white-space: nowrap;
@@ -320,9 +332,9 @@ body {
 .time-input {
   border: 1px solid var(--border);
   border-radius: 6px;
-  padding: 4px 8px;
-  font-size: 13px;
-  width: 80px;
+  padding: 3px 6px;
+  font-size: 12px;
+  width: 70px;
   color: var(--text-light);
   cursor: pointer;
 }
@@ -337,8 +349,8 @@ body {
   width: 100%;
   border: 1px dashed var(--border);
   border-radius: 8px;
-  padding: 8px 12px;
-  font-size: 14px;
+  padding: 6px 10px;
+  font-size: 13px;
   color: var(--text-light);
   outline: none;
   resize: none;
@@ -354,18 +366,19 @@ body {
 /* Actions */
 .task-actions {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  flex-direction: row;
+  gap: 4px;
   flex-shrink: 0;
+  align-items: center;
 }
 
 .icon-btn {
   border: none;
   background: transparent;
   cursor: pointer;
-  padding: 5px;
+  padding: 4px;
   border-radius: 6px;
-  font-size: 15px;
+  font-size: 13px;
   color: var(--text-light);
   transition: all 0.15s;
   line-height: 1;
@@ -398,8 +411,8 @@ body {
   border: 1px solid var(--border);
   background: var(--card);
   border-radius: 8px;
-  padding: 10px 20px;
-  font-size: 14px;
+  padding: 8px 14px;
+  font-size: 13px;
   cursor: pointer;
   color: var(--text-light);
   transition: all 0.2s;
@@ -428,80 +441,78 @@ body {
 
 /* Order number */
 .order-num {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--text-lighter);
   font-weight: 600;
-  min-width: 22px;
+  min-width: 20px;
   text-align: center;
   margin-top: 4px;
 }
 
-/* ── Mobile Responsive ─────────────────────────────── */
-@media (max-width: 480px) {
-  body { padding: 12px; }
-  
-  .header { 
-    flex-direction: column; 
-    align-items: flex-start; 
-    gap: 8px;
-    margin-bottom: 12px;
-  }
-  .header-left h1 { font-size: 22px; }
-  .stats { 
-    display: flex; 
-    align-items: baseline; 
-    gap: 8px; 
-    text-align: left;
-  }
-  .stats .rate { font-size: 24px; }
-  .stats .rate-label { font-size: 12px; margin-top: 0; }
-  
-  .week-bar {
-    gap: 4px;
-    padding: 8px;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  .week-bar::-webkit-scrollbar { display: none; }
-  .day-card { 
-    flex: 0 0 48px; 
-    padding: 6px 2px; 
-    min-width: 48px; 
-  }
-  .day-card .day-date { font-size: 13px; }
-  .day-card .day-week { font-size: 10px; }
-  .day-card .day-rate { font-size: 10px; }
-  
-  .add-bar { 
-    flex-wrap: wrap; 
-    padding: 10px; 
-    gap: 6px; 
-  }
-  .add-bar input[type="text"] { 
-    flex: 1 1 100%; 
-    padding: 8px 12px; 
-  }
-  .priority-select { padding: 8px 6px; font-size: 13px; }
-  .btn-add { padding: 8px 16px; font-size: 14px; }
-  
-  .color-picker { gap: 3px; }
-  .color-dot { width: 18px; height: 18px; }
-  
-  .task-item { padding: 12px 10px; gap: 10px; }
-  .task-title { font-size: 15px; }
-  .task-actions { 
-    flex-direction: row; 
-    gap: 4px; 
+/* ── Desktop override ─────────────────────────────── */
+@media (min-width: 768px) {
+  body { padding: 20px; }
+
+  .header {
+    flex-direction: row;
     align-items: center;
+    gap: 0;
+    margin-bottom: 16px;
   }
-  .icon-btn { font-size: 13px; padding: 4px; }
-  
-  .time-input { width: 70px; padding: 3px 6px; font-size: 12px; }
-  .task-note { padding: 6px 10px; font-size: 13px; }
-  .badge { font-size: 11px; padding: 2px 8px; }
-  
-  .toolbar button { padding: 8px 14px; font-size: 13px; }
+  .header-left h1 { font-size: 26px; }
+
+  .stats {
+    display: block;
+    text-align: right;
+  }
+  .stats .rate { font-size: 32px; }
+  .stats .rate-label { font-size: 13px; margin-top: 4px; }
+
+  .week-bar {
+    gap: 6px;
+    padding: 10px;
+    overflow-x: visible;
+  }
+  .day-card {
+    flex: 1;
+    padding: 8px 4px;
+    min-width: 0;
+  }
+  .day-card .day-date { font-size: 15px; }
+  .day-card .day-week { font-size: 11px; }
+  .day-card .day-rate { font-size: 11px; }
+
+  .add-bar {
+    flex-wrap: nowrap;
+    gap: 8px;
+    padding: 14px;
+  }
+  .add-bar input[type="text"] {
+    flex: 1;
+    padding: 10px 14px;
+  }
+  .priority-select { padding: 10px 10px; font-size: 14px; }
+  .btn-add { padding: 10px 22px; font-size: 15px; }
+
+  .color-picker { flex-wrap: nowrap; gap: 5px; }
+  .color-dot { width: 20px; height: 20px; }
+
+  .task-item { padding: 16px 18px; gap: 14px; }
+  .task-title { font-size: 16px; }
+  .task-actions {
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+  }
+  .icon-btn { font-size: 15px; padding: 5px; }
+
+  .time-input { width: 80px; padding: 4px 8px; font-size: 13px; }
+  .task-note { padding: 8px 12px; font-size: 14px; }
+  .badge { font-size: 12px; padding: 3px 10px; }
+
+  .toolbar button { padding: 10px 20px; font-size: 14px; }
+
+  .order-num { font-size: 13px; min-width: 22px; }
 }
 </style>
 </head>
