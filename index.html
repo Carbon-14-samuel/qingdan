@@ -300,37 +300,8 @@ body {
 }
 
 .time-arrow { color: var(--text-lighter); font-size: 12px; }
-
-/* 未完成原因 */
-.task-reason {
-  margin-top: 10px;
-  display: flex;
-  align-items: flex-start;
-  gap: 6px;
-}
-
-.task-reason-icon {
-  font-size: 14px;
-  margin-top: 6px;
-}
-
-.task-reason-input {
-  flex: 1;
-  border: 1px dashed var(--orange);
-  border-radius: 8px;
-  padding: 8px 12px;
-  font-size: 14px;
-  color: var(--text);
-  outline: none;
-  resize: none;
-  min-height: 36px;
-  background: #fffbeb;
-  transition: border-color 0.2s;
-  font-family: inherit;
-}
-
-.task-reason-input:focus { border-color: var(--orange); border-style: solid; }
-.task-reason-input::placeholder { color: var(--text-lighter); }
+.task-note:focus { border-color: var(--accent); border-style: solid; }
+.task-note::placeholder { color: var(--text-lighter); }
 
 /* Note */
 .task-note {
@@ -436,19 +407,6 @@ body {
   text-align: center;
   margin-top: 4px;
 }
-
-/* 回顾提示 */
-.review-hint {
-  background: var(--accent-light);
-  border-radius: 10px;
-  padding: 12px 16px;
-  margin-bottom: 14px;
-  font-size: 14px;
-  color: var(--accent);
-  display: none;
-}
-
-.review-hint.show { display: block; }
 </style>
 </head>
 <body>
@@ -470,11 +428,6 @@ body {
 
   <!-- 最近7天快捷条 -->
   <div class="week-bar" id="weekBar"></div>
-
-  <!-- 回顾提示 -->
-  <div class="review-hint" id="reviewHint">
-    💡 还有 <strong id="uncompletedCount">0</strong> 个任务没完成,记得写一下原因哦~
-  </div>
 
   <!-- Add bar -->
   <div class="add-bar">
@@ -599,8 +552,7 @@ function addTask() {
     completed: false,
     startTime: '',
     endTime: '',
-    note: '',
-    reason: ''
+    note: ''
   });
   input.value = '';
   saveTasks();
@@ -659,7 +611,6 @@ function copyTask(id) {
   if (t.startTime) text += `\n  开始: ${t.startTime}`;
   if (t.endTime) text += `\n  结束: ${t.endTime}`;
   if (t.note) text += `\n  备注: ${t.note}`;
-  if (!t.completed && t.reason) text += `\n  未完成原因: ${t.reason}`;
   text += `\n  状态: ${t.completed ? '✅ 已完成' : '⬜ 未完成'}`;
 
   copyToClipboard(text);
@@ -681,7 +632,6 @@ function exportText() {
       lines.push(`   ⏰ ${t.startTime || '--'} → ${t.endTime || '--'}`);
     }
     if (t.note) lines.push(`   📝 ${t.note}`);
-    if (!t.completed && t.reason) lines.push(`   ❓ 未完成原因: ${t.reason}`);
     if (t.completed) doneCount++;
     lines.push('');
   });
@@ -711,21 +661,12 @@ function render() {
   
   const list = document.getElementById('taskList');
   const empty = document.getElementById('emptyState');
-  const reviewHint = document.getElementById('reviewHint');
   list.innerHTML = '';
 
   if (!tasks.length) {
     empty.style.display = 'block';
-    reviewHint.classList.remove('show');
   } else {
     empty.style.display = 'none';
-    const uncompleted = tasks.filter(t => !t.completed).length;
-    if (uncompleted > 0) {
-      document.getElementById('uncompletedCount').textContent = uncompleted;
-      reviewHint.classList.add('show');
-    } else {
-      reviewHint.classList.remove('show');
-    }
   }
 
   // Sort: uncompleted first, then by priority
@@ -738,15 +679,6 @@ function render() {
     const p = PRIORITY_MAP[t.priority];
     const div = document.createElement('div');
     div.className = `task-item priority-${t.priority}${t.completed ? ' completed' : ''}`;
-    
-    // 未完成原因输入框(仅未完成时显示)
-    const reasonHtml = !t.completed ? `
-      <div class="task-reason">
-        <span class="task-reason-icon">🤔</span>
-        <textarea class="task-reason-input" placeholder="为什么没完成呢?写一句原因..." 
-          onblur="updateTask(${t.id}, 'reason', this.value)">${escapeHtml(t.reason || '')}</textarea>
-      </div>
-    ` : '';
     
     div.innerHTML = `
       <div class="order-num">${i + 1}</div>
@@ -764,7 +696,6 @@ function render() {
               onchange="updateTask(${t.id}, 'endTime', this.value)">
           </div>
         </div>
-        ${reasonHtml}
         <textarea class="task-note" placeholder="备注..." 
           onblur="updateTask(${t.id}, 'note', this.value)">${escapeHtml(t.note)}</textarea>
       </div>
