@@ -701,13 +701,31 @@ const DEFAULT_PRESETS = [
   '洗澡',
   '口算练习',
   '帮做家务',
-  '复习功课'
+  '复习功课',
+  'ABC Reading',
+  '可汗学院',
+  '小小优趣',
+  '天天练',
+  '语文天天练',
+  '英语天天练',
+  '寒假作业',
+  '暑假作业'
 ];
 
 function getPresets() {
   try {
     const raw = localStorage.getItem('presets');
-    return raw ? JSON.parse(raw) : [...DEFAULT_PRESETS];
+    if (!raw) return [...DEFAULT_PRESETS];
+    const stored = JSON.parse(raw);
+    // Merge: add any new defaults not already in stored list
+    const merged = [...stored];
+    DEFAULT_PRESETS.forEach(d => {
+      if (!merged.includes(d)) merged.push(d);
+    });
+    if (merged.length !== stored.length) {
+      localStorage.setItem('presets', JSON.stringify(merged));
+    }
+    return merged;
   } catch { return [...DEFAULT_PRESETS]; }
 }
 
