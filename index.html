@@ -18,6 +18,8 @@
   --green-light: #f0fdf4;
   --orange: #ea580c;
   --red: #dc2626;
+  --blue: #2563eb;
+  --blue-light: #eff6ff;
   --shadow: 0 1px 3px rgba(120,80,30,0.06);
   --shadow-hover: 0 2px 8px rgba(120,80,30,0.1);
 }
@@ -208,8 +210,9 @@ body {
 .task-item:hover { box-shadow: var(--shadow-hover); }
 
 .task-item.priority-1 { border-left-color: var(--red); }
-.task-item.priority-2 { border-left-color: var(--orange); }
-.task-item.priority-3 { border-left-color: var(--green); }
+.task-item.priority-2 { border-left-color: var(--blue); }
+.task-item.priority-3 { border-left-color: var(--orange); }
+.task-item.priority-4 { border-left-color: var(--green); }
 
 .task-item.completed { opacity: 0.6; }
 .task-item.completed .task-title { text-decoration: line-through; color: var(--text-light); }
@@ -274,8 +277,9 @@ body {
 }
 
 .badge.p1 { background: #fef2f2; color: var(--red); }
-.badge.p2 { background: #fff7ed; color: var(--orange); }
-.badge.p3 { background: var(--green-light); color: var(--green); }
+.badge.p2 { background: var(--blue-light); color: var(--blue); }
+.badge.p3 { background: #fff7ed; color: var(--orange); }
+.badge.p4 { background: var(--green-light); color: var(--green); }
 .badge.status { background: var(--accent-light); color: var(--accent); }
 
 /* Time inputs */
@@ -476,9 +480,10 @@ body {
   <div class="add-bar">
     <input type="text" id="taskInput" placeholder="今天要做什么?写下来..." onkeydown="if(event.key==='Enter')addTask()">
     <select class="priority-select" id="prioritySelect">
-      <option value="1">🔴 主</option>
-      <option value="2">🟠 次</option>
-      <option value="3" selected>🟢 常</option>
+      <option value="1">🔴 Ⅰ 重要·紧急</option>
+      <option value="2" selected>🔵 Ⅱ 重要·不紧急</option>
+      <option value="3">🟠 Ⅲ 紧急·不重要</option>
+      <option value="4">🟢 Ⅳ 不重要·不紧急</option>
     </select>
     <button class="btn-add" onclick="addTask()">添加</button>
   </div>
@@ -503,9 +508,10 @@ body {
 
 <script>
 const PRIORITY_MAP = {
-  1: { label: '主', cls: 'p1', name: '🔴 主' },
-  2: { label: '次', cls: 'p2', name: '🟠 次' },
-  3: { label: '常', cls: 'p3', name: '🟢 常' }
+  1: { label: 'Ⅰ', cls: 'p1', name: '🔴 Ⅰ 重要·紧急' },
+  2: { label: 'Ⅱ', cls: 'p2', name: '🔵 Ⅱ 重要·不紧急' },
+  3: { label: 'Ⅲ', cls: 'p3', name: '🟠 Ⅲ 紧急·不重要' },
+  4: { label: 'Ⅳ', cls: 'p4', name: '🟢 Ⅳ 不重要·不紧急' }
 };
 
 const WEEK_NAMES = ['日','一','二','三','四','五','六'];
