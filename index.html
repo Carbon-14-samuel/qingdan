@@ -567,7 +567,7 @@ body {
   .day-card .day-rate { font-size: 11px; }
 
   .add-bar {
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     gap: 8px;
     padding: 14px;
   }
@@ -580,7 +580,7 @@ body {
   .preset-select { padding: 10px 8px; font-size: 14px; }
   .btn-preset-save { padding: 9px 12px; font-size: 16px; }
 
-  .color-picker { flex-wrap: nowrap; gap: 5px; }
+  .color-picker { flex-wrap: wrap; gap: 5px; }
   .color-dot { width: 20px; height: 20px; }
 
   .task-item { padding: 16px 18px; gap: 14px; }
@@ -599,6 +599,12 @@ body {
   .toolbar button { padding: 10px 20px; font-size: 14px; }
 
   .order-num { font-size: 13px; min-width: 22px; }
+}
+
+/* ── Large desktop: single row add bar ───────────────── */
+@media (min-width: 1200px) {
+  .add-bar { flex-wrap: nowrap; }
+  .color-picker { flex-wrap: nowrap; }
 }
 </style>
 </head>
