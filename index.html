@@ -428,6 +428,63 @@ body {
 
 .toolbar button:hover { border-color: var(--accent); color: var(--accent); }
 
+/* Joy moment (微剂量感恩) */
+.joy-section {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: var(--shadow);
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.joy-label {
+  font-size: 14px;
+  color: var(--text-light);
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.joy-current {
+  font-size: 28px;
+  cursor: pointer;
+  transition: transform 0.15s;
+  line-height: 1;
+  user-select: none;
+}
+
+.joy-current:hover { transform: scale(1.2); }
+
+.joy-options {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.joy-emoji {
+  font-size: 22px;
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 6px;
+  transition: all 0.15s;
+  line-height: 1;
+  user-select: none;
+  border: 2px solid transparent;
+}
+
+.joy-emoji:hover {
+  background: var(--accent-light);
+  border-color: var(--accent);
+}
+
+.joy-emoji.selected {
+  background: var(--accent-light);
+  border-color: var(--accent);
+}
+
 /* Toast */
 .toast {
   position: fixed;
@@ -646,6 +703,27 @@ body {
     <div>今天还没有任务,添加一个开始吧</div>
   </div>
 
+  <!-- 开心一刻 (微剂量感恩) -->
+  <div class="joy-section" id="joySection">
+    <span class="joy-label">😊 今天最开心的一刻：</span>
+    <span class="joy-current" id="joyCurrent" onclick="toggleJoyPicker()">🤔</span>
+    <div class="joy-options" id="joyOptions" style="display:none;">
+      <span class="joy-emoji" onclick="pickJoy('😊')">😊</span>
+      <span class="joy-emoji" onclick="pickJoy('😄')">😄</span>
+      <span class="joy-emoji" onclick="pickJoy('🥳')">🥳</span>
+      <span class="joy-emoji" onclick="pickJoy('🤗')">🤗</span>
+      <span class="joy-emoji" onclick="pickJoy('😌')">😌</span>
+      <span class="joy-emoji" onclick="pickJoy('🎉')">🎉</span>
+      <span class="joy-emoji" onclick="pickJoy('⭐')">⭐</span>
+      <span class="joy-emoji" onclick="pickJoy('❤️')">❤️</span>
+      <span class="joy-emoji" onclick="pickJoy('🌟')">🌟</span>
+      <span class="joy-emoji" onclick="pickJoy('🎈')">🎈</span>
+      <span class="joy-emoji" onclick="pickJoy('💪')">💪</span>
+      <span class="joy-emoji" onclick="pickJoy('🍉')">🍉</span>
+      <span class="joy-emoji" onclick="pickJoy('❌')" style="font-size:16px;color:var(--text-lighter);">✕</span>
+    </div>
+  </div>
+
   <!-- Toolbar -->
   <div class="toolbar">
     <button onclick="clearCompleted()">清除已完成</button>
@@ -803,6 +881,7 @@ const WEEK_NAMES = ['日','一','二','三','四','五','六'];
 
 let tasks = [];
 let currentDate = new Date().toISOString().split('T')[0];
+let currentJoy = '';
 
 // ── Init ──────────────────────────────────────────────
 function init() {
@@ -810,9 +889,11 @@ function init() {
   document.getElementById('dateInput').addEventListener('change', function() {
     currentDate = this.value;
     loadTasks();
+    loadJoyMoment();
     render();
   });
   loadTasks();
+  loadJoyMoment();
   loadPresets();
   render();
 }
@@ -822,6 +903,49 @@ function loadTasks() {
     const raw = localStorage.getItem('tasks_' + currentDate);
     tasks = raw ? JSON.parse(raw) : [];
   } catch { tasks = []; }
+}
+
+function loadJoyMoment() {
+  try {
+    const raw = localStorage.getItem('joy_' + currentDate);
+    currentJoy = raw || '';
+  } catch { currentJoy = ''; }
+  renderJoy();
+}
+
+function saveJoyMoment(emoji) {
+  localStorage.setItem('joy_' + currentDate, emoji);
+  currentJoy = emoji;
+}
+
+function toggleJoyPicker() {
+  const opts = document.getElementById('joyOptions');
+  opts.style.display = opts.style.display === 'none' ? 'flex' : 'none';
+}
+
+function pickJoy(emoji) {
+  if (emoji === '❌') {
+    saveJoyMoment('');
+    renderJoy();
+    document.getElementById('joyOptions').style.display = 'none';
+    renderWeekBar();
+    return;
+  }
+  saveJoyMoment(emoji);
+  renderJoy();
+  document.getElementById('joyOptions').style.display = 'none';
+  renderWeekBar();
+}
+
+function renderJoy() {
+  const el = document.getElementById('joyCurrent');
+  if (currentJoy) {
+    el.textContent = currentJoy;
+    el.title = '点击换一个';
+  } else {
+    el.textContent = '🤔';
+    el.title = '今天有什么开心的?';
+  }
 }
 
 function randomColor() {
@@ -844,6 +968,13 @@ function getDayRate(dateStr) {
   } catch { return null; }
 }
 
+// ── 获取某天的开心一刻 emoji ──────────────────────────
+function getDayJoy(dateStr) {
+  try {
+    return localStorage.getItem('joy_' + dateStr) || '';
+  } catch { return ''; }
+}
+
 // ── 渲染7天快捷条 ─────────────────────────────────────
 function renderWeekBar() {
   const bar = document.getElementById('weekBar');
@@ -858,6 +989,7 @@ function renderWeekBar() {
     const monthNum = d.getMonth() + 1;
     const weekIdx = d.getDay();
     const rate = getDayRate(dateStr);
+    const joy = getDayJoy(dateStr);
     
     const card = document.createElement('div');
     card.className = 'day-card' + (dateStr === currentDate ? ' active' : '');
@@ -865,6 +997,7 @@ function renderWeekBar() {
       currentDate = dateStr;
       document.getElementById('dateInput').value = dateStr;
       loadTasks();
+      loadJoyMoment();
       render();
     };
     
@@ -872,6 +1005,7 @@ function renderWeekBar() {
       <div class="day-date">${monthNum}/${dayNum}</div>
       <div class="day-week">周${WEEK_NAMES[weekIdx]}</div>
       <div class="day-rate">${rate !== null ? rate + '%' : '--'}</div>
+      ${joy ? '<div style="font-size:13px;margin-top:1px;">' + joy + '</div>' : ''}
     `;
     bar.appendChild(card);
   }
