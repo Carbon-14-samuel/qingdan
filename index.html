@@ -185,6 +185,18 @@ body {
   color: var(--text);
 }
 
+.color-select {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 6px;
+  font-size: 13px;
+  background: var(--card);
+  cursor: pointer;
+  color: var(--text);
+  min-width: 80px;
+  flex-shrink: 0;
+}
+
 .btn-add {
   background: var(--accent);
   color: #fff;
@@ -223,35 +235,6 @@ body {
 }
 
 .btn-preset-save:hover { border-color: var(--accent); }
-
-/* Color picker */
-.color-picker {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 3px;
-  flex-shrink: 0;
-}
-
-.color-dot {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  cursor: pointer;
-  border: 2px solid transparent;
-  transition: all 0.15s;
-  flex-shrink: 0;
-}
-
-.color-dot:hover { transform: scale(1.2); }
-.color-dot.selected { border-color: #333; box-shadow: 0 0 0 2px #fff; }
-.color-dot.auto { 
-  border: 1px dashed #ccc; 
-  display: flex; align-items: center; justify-content: center;
-  font-size: 10px;
-  color: #999;
-  background: #fff;
-}
 
 /* Task list */
 .task-list {
@@ -576,12 +559,12 @@ body {
     padding: 10px 14px;
   }
   .priority-select { padding: 10px 10px; font-size: 14px; }
+  .color-select { padding: 10px 10px; font-size: 14px; min-width: 90px; }
   .btn-add { padding: 10px 22px; font-size: 15px; }
   .preset-select { padding: 10px 8px; font-size: 14px; }
   .btn-preset-save { padding: 9px 12px; font-size: 16px; }
 
-  .color-picker { flex-wrap: wrap; gap: 5px; }
-  .color-dot { width: 20px; height: 20px; }
+  .btn-add { padding: 10px 22px; font-size: 15px; }
 
   .task-item { padding: 16px 18px; gap: 14px; }
   .task-title { font-size: 16px; }
@@ -604,7 +587,6 @@ body {
 /* ── Large desktop: single row add bar ───────────────── */
 @media (min-width: 1200px) {
   .add-bar { flex-wrap: nowrap; }
-  .color-picker { flex-wrap: nowrap; }
 }
 </style>
 </head>
@@ -641,7 +623,17 @@ body {
       <option value="3">🟠 Ⅲ 紧急·不重要</option>
       <option value="4">🟢 Ⅳ 不重要·不紧急</option>
     </select>
-    <div class="color-picker" id="colorPicker"></div>
+    <select id="colorSelect" class="color-select">
+      <option value="" selected>🎲 随机</option>
+      <option value="#e11d48">🔴 红</option>
+      <option value="#f59e0b">🟠 橙</option>
+      <option value="#10b981">🟢 绿</option>
+      <option value="#3b82f6">🔵 蓝</option>
+      <option value="#8b5cf6">🟣 紫</option>
+      <option value="#ec4899">🩷 粉</option>
+      <option value="#14b8a6">🩵 青</option>
+      <option value="#78716c">⚫ 灰</option>
+    </select>
     <button class="btn-add" onclick="addTask()">添加</button>
   </div>
 
@@ -693,8 +685,6 @@ const COLORS = [
   '#14b8a6', // 青
   '#78716c', // 灰
 ];
-
-let selectedColor = ''; // 空=随机
 
 // ── Presets (常用任务) ─────────────────────────────────
 const DEFAULT_PRESETS = [
@@ -824,7 +814,6 @@ function init() {
   });
   loadTasks();
   loadPresets();
-  renderColorPicker();
   render();
 }
 
@@ -833,28 +822,6 @@ function loadTasks() {
     const raw = localStorage.getItem('tasks_' + currentDate);
     tasks = raw ? JSON.parse(raw) : [];
   } catch { tasks = []; }
-}
-
-function renderColorPicker() {
-  const picker = document.getElementById('colorPicker');
-  if (!picker) return;
-  picker.innerHTML = '';
-  
-  const randDot = document.createElement('div');
-  randDot.className = 'color-dot auto' + (selectedColor === '' ? ' selected' : '');
-  randDot.title = '随机颜色';
-  randDot.textContent = '?';
-  randDot.onclick = () => { selectedColor = ''; renderColorPicker(); };
-  picker.appendChild(randDot);
-  
-  COLORS.slice(1).forEach(c => {
-    const dot = document.createElement('div');
-    dot.className = 'color-dot' + (selectedColor === c ? ' selected' : '');
-    dot.style.background = c;
-    dot.title = c;
-    dot.onclick = () => { selectedColor = c; renderColorPicker(); };
-    picker.appendChild(dot);
-  });
 }
 
 function randomColor() {
@@ -924,7 +891,7 @@ function addTask() {
     startTime: '',
     endTime: '',
     note: '',
-    color: selectedColor || randomColor()
+    color: document.getElementById('colorSelect').value || randomColor()
   });
   input.value = '';
   saveTasks();
