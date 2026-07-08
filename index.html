@@ -428,6 +428,144 @@ body {
 
 .toolbar button:hover { border-color: var(--accent); color: var(--accent); }
 
+/* Focus timer (微剂量专注) */
+.focus-card {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-shadow: var(--shadow);
+  margin-bottom: 16px;
+  transition: all 0.3s;
+  border: 2px solid transparent;
+}
+
+.focus-card.running {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(217,119,6,0.12), var(--shadow);
+}
+
+.focus-card.done {
+  border-color: var(--green);
+  background: var(--green-light);
+}
+
+.focus-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.focus-icon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.focus-name {
+  flex: 1;
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  background: transparent;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+.focus-name:focus { border-color: var(--accent); border-style: solid; }
+.focus-name::placeholder { color: var(--text-lighter); }
+.focus-name:disabled { background: transparent; color: var(--text); border-color: transparent; padding-left: 0; }
+
+.focus-timer {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  white-space: nowrap;
+  min-width: 68px;
+  text-align: right;
+}
+
+.focus-card.done .focus-timer { color: var(--green); }
+
+.focus-progress {
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  margin: 10px 0 8px;
+  overflow: hidden;
+  display: none;
+}
+
+.focus-card.running .focus-progress,
+.focus-card.done .focus-progress { display: block; }
+
+.focus-bar {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 1s linear;
+}
+
+.focus-card.done .focus-bar { background: var(--green); width: 100% !important; }
+
+.focus-controls {
+  display: none;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.focus-card.running .focus-controls { display: flex; }
+
+.focus-btn {
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: 6px;
+  padding: 5px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--text);
+  transition: all 0.15s;
+  font-family: inherit;
+}
+
+.focus-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+.focus-btn.primary {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  font-weight: 500;
+}
+
+.focus-btn.primary:hover { opacity: 0.85; }
+
+.focus-btn.danger:hover { border-color: var(--red); color: var(--red); }
+
+.focus-start-btn { transition: opacity 0.2s; }
+.focus-card.running .focus-start-btn { display: none; }
+.focus-card.done .focus-start-btn { display: none; }
+.focus-card.done .focus-controls { display: flex; }
+
+/* Quick focus button on task items */
+.task-focus-btn {
+  font-size: 14px;
+  padding: 2px 6px;
+  background: var(--accent-light);
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--accent);
+  transition: all 0.15s;
+  white-space: nowrap;
+  line-height: 1.4;
+}
+
+.task-focus-btn:hover { background: var(--accent); color: #fff; }
+
 /* Joy moment (微剂量感恩) */
 .joy-section {
   background: var(--card);
@@ -692,6 +830,22 @@ body {
       <option value="#78716c">⚫ 灰</option>
     </select>
     <button class="btn-add" onclick="addTask()">添加</button>
+  </div>
+
+  <!-- 5分钟专注 (微剂量专注) -->
+  <div class="focus-card" id="focusCard">
+    <div class="focus-top">
+      <span class="focus-icon">🍅</span>
+      <input type="text" class="focus-name" id="focusName" placeholder="专注什么？（不填也行）" onkeydown="if(event.key==='Enter')startFocus()">
+      <span class="focus-timer" id="focusTimer">5:00</span>
+      <button class="focus-btn primary focus-start-btn" onclick="startFocus()">▶️</button>
+    </div>
+    <div class="focus-progress"><div class="focus-bar" id="focusBar" style="width:100%"></div></div>
+    <div class="focus-controls">
+      <button class="focus-btn primary" onclick="pauseFocus()" id="focusPauseBtn">⏸️ 暂停</button>
+      <button class="focus-btn" onclick="addMinute()">+1分钟</button>
+      <button class="focus-btn danger" onclick="resetFocus()">↺ 放弃</button>
+    </div>
   </div>
 
   <!-- Task list -->
@@ -1173,6 +1327,7 @@ function render() {
           onblur="updateTask(${t.id}, 'note', this.value)">${escapeHtml(t.note)}</textarea>
       </div>
       <div class="task-actions">
+        <button class="task-focus-btn" title="专注5分钟" onclick="focusTask('${escapeHtml(t.title).replace(/'/g, "\\'")}')">▶️</button>
         <button class="icon-btn move" title="上移" onclick="moveTask(${t.id}, -1)">▲</button>
         <button class="icon-btn move" title="下移" onclick="moveTask(${t.id}, 1)">▼</button>
         <button class="icon-btn copy" title="复制" onclick="copyTask(${t.id})">📋</button>
@@ -1188,6 +1343,131 @@ function render() {
   const rate = total ? Math.round(done / total * 100) : 0;
   document.getElementById('rateDisplay').textContent = rate + '%';
   document.getElementById('rateLabel').textContent = `${done} / ${total} 完成`;
+}
+
+// ── Focus Timer (微剂量专注) ─────────────────────────
+const FOCUS_TOTAL = 300; // 5分钟
+let focusSeconds = FOCUS_TOTAL;
+let focusRunning = false;
+let focusInterval = null;
+
+function focusTask(title) {
+  document.getElementById('focusName').value = title;
+  // Scroll to focus card
+  document.getElementById('focusCard').scrollIntoView({ behavior: 'smooth' });
+  startFocus();
+}
+
+function startFocus() {
+  if (focusRunning) return;
+  focusRunning = true;
+  const card = document.getElementById('focusCard');
+  const nameInput = document.getElementById('focusName');
+  
+  card.classList.add('running');
+  card.classList.remove('done');
+  nameInput.disabled = true;
+  
+  if (!nameInput.value.trim()) nameInput.value = '专注中';
+  
+  focusInterval = setInterval(tickFocus, 1000);
+  updateFocusDisplay();
+}
+
+function pauseFocus() {
+  if (focusRunning) {
+    // Pause
+    focusRunning = false;
+    clearInterval(focusInterval);
+    focusInterval = null;
+    document.getElementById('focusCard').classList.remove('running');
+    document.getElementById('focusName').disabled = false;
+    document.getElementById('focusPauseBtn').textContent = '▶️ 继续';
+  } else {
+    // Resume
+    focusRunning = true;
+    const card = document.getElementById('focusCard');
+    const nameInput = document.getElementById('focusName');
+    card.classList.add('running');
+    card.classList.remove('done');
+    nameInput.disabled = true;
+    focusInterval = setInterval(tickFocus, 1000);
+    document.getElementById('focusPauseBtn').textContent = '⏸️ 暂停';
+    updateFocusDisplay();
+  }
+}
+
+function resetFocus() {
+  focusRunning = false;
+  clearInterval(focusInterval);
+  focusInterval = null;
+  focusSeconds = FOCUS_TOTAL;
+  const card = document.getElementById('focusCard');
+  card.classList.remove('running', 'done');
+  document.getElementById('focusName').disabled = false;
+  document.getElementById('focusName').value = '';
+  document.getElementById('focusPauseBtn').textContent = '⏸️ 暂停';
+  updateFocusDisplay();
+}
+
+function addMinute() {
+  focusSeconds += 60;
+  updateFocusDisplay();
+}
+
+function tickFocus() {
+  if (focusSeconds <= 0) {
+    completeFocus();
+    return;
+  }
+  focusSeconds--;
+  updateFocusDisplay();
+}
+
+function completeFocus() {
+  focusRunning = false;
+  clearInterval(focusInterval);
+  focusInterval = null;
+  
+  const card = document.getElementById('focusCard');
+  card.classList.remove('running');
+  card.classList.add('done');
+  
+  const nameInput = document.getElementById('focusName');
+  nameInput.disabled = true;
+  
+  const timer = document.getElementById('focusTimer');
+  timer.textContent = '🎉';
+  
+  // Record focus session
+  try {
+    const raw = localStorage.getItem('focus_' + currentDate);
+    const sessions = raw ? JSON.parse(raw) : [];
+    sessions.push({
+      task: nameInput.value || '未命名',
+      time: currentTimeStr()
+    });
+    localStorage.setItem('focus_' + currentDate, JSON.stringify(sessions));
+  } catch {}
+  
+  // Reset after 4 seconds
+  setTimeout(() => {
+    focusSeconds = FOCUS_TOTAL;
+    card.classList.remove('done');
+    nameInput.disabled = false;
+    nameInput.value = '';
+    document.getElementById('focusPauseBtn').textContent = '⏸️ 暂停';
+    updateFocusDisplay();
+  }, 4000);
+}
+
+function updateFocusDisplay() {
+  const timer = document.getElementById('focusTimer');
+  const bar = document.getElementById('focusBar');
+  const mins = Math.floor(focusSeconds / 60);
+  const secs = focusSeconds % 60;
+  timer.textContent = mins + ':' + String(secs).padStart(2, '0');
+  bar.style.width = (focusSeconds / FOCUS_TOTAL * 100) + '%';
 }
 
 // ── Utils ─────────────────────────────────────────────
