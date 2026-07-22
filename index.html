@@ -623,6 +623,36 @@ body {
   border-color: var(--accent);
 }
 
+/* Safety rules */
+.safety-section {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 10px 12px;
+  box-shadow: var(--shadow);
+  margin-bottom: 10px;
+  opacity: 0.85;
+}
+
+.safety-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-light);
+  margin-bottom: 6px;
+  letter-spacing: 1px;
+}
+
+.safety-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+}
+
+.safety-item {
+  font-size: 13px;
+  color: var(--text-light);
+  white-space: nowrap;
+}
+
 /* Toast */
 .toast {
   position: fixed;
@@ -875,6 +905,18 @@ body {
       <span class="joy-emoji" onclick="pickJoy('💪')">💪</span>
       <span class="joy-emoji" onclick="pickJoy('🍉')">🍉</span>
       <span class="joy-emoji" onclick="pickJoy('❌')" style="font-size:16px;color:var(--text-lighter);">✕</span>
+    </div>
+  </div>
+
+  <!-- Safety rules -->
+  <div class="safety-section">
+    <div class="safety-title">🛡️ 安全守则</div>
+    <div class="safety-list">
+      <span class="safety-item">⚠️ 大人找你帮忙 → 走开（熟人也不行）</span>
+      <span class="safety-item">⚠️ 陌生小孩找你帮忙 → 走开</span>
+      <span class="safety-item">🔑 有人替爸妈接你 → 先问暗号</span>
+      <span class="safety-item">🤫 有人让你瞒着爸妈 → 必须说</span>
+      <span class="safety-item">📍 不能离开第一现场</span>
     </div>
   </div>
 
