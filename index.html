@@ -953,6 +953,112 @@ body {
 .jr-subpanel { display: none; }
 .jr-subpanel.active { display: block; }
 
+/* Friend probes */
+.jr-probe-card { position: relative; }
+.jr-probe-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.jr-probe-icon { font-size: 22px; }
+.jr-probe-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+}
+.jr-probe-question {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--accent);
+  line-height: 1.5;
+  margin-bottom: 6px;
+}
+.jr-probe-hint {
+  font-size: 13px;
+  color: var(--text-light);
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+.jr-probe-feel {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.jr-feel-btn {
+  flex: 1;
+  padding: 10px 6px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--text-light);
+}
+.jr-feel-btn:active { transform: scale(0.97); }
+.jr-feel-btn.selected.jr-feel-good {
+  border-color: #16a34a;
+  background: #f0fdf4;
+  color: #16a34a;
+}
+.jr-feel-btn.selected.jr-feel-ok {
+  border-color: #d97706;
+  background: #fef3e2;
+  color: #d97706;
+}
+.jr-feel-btn.selected.jr-feel-tired {
+  border-color: #dc2626;
+  background: #fef2f2;
+  color: #dc2626;
+}
+.jr-probe-note {
+  width: 100%;
+  min-height: 60px;
+  padding: 10px 12px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  font-size: 14px;
+  color: var(--text);
+  background: #fafaf9;
+  outline: none;
+  resize: vertical;
+  font-family: inherit;
+  line-height: 1.5;
+  transition: border-color 0.2s;
+}
+.jr-probe-note:focus { border-color: var(--accent); background: #fff; }
+.jr-probe-note::placeholder { color: var(--text-lighter); }
+
+.jr-probe-summary {
+  text-align: center;
+  background: var(--blue-light);
+  border: 2px solid #bfdbfe;
+}
+.jr-probe-summary-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--blue);
+  margin-bottom: 6px;
+}
+.jr-probe-summary-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.jr-probe-summary-signal {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 20px;
+  display: inline-block;
+}
+.jr-probe-summary-signal.good { background: #dcfce7; color: #16a34a; }
+.jr-probe-summary-signal.caution { background: #fef3e2; color: #d97706; }
+.jr-probe-summary-signal.warn { background: #fef2f2; color: #dc2626; }
+
 /* Purchase */
 .jr-purchase-input {
   display: flex;
@@ -1231,6 +1337,7 @@ body {
     <div class="jr-subtabs">
       <button class="jr-subtab active" onclick="jrSwitchTab('blame')">🔄 甩锅变任务</button>
       <button class="jr-subtab" onclick="jrSwitchTab('purchase')">🛒 采购三问</button>
+      <button class="jr-subtab" onclick="jrSwitchTab('friend')">🔍 交友识人</button>
     </div>
 
     <!-- === 甩锅变任务 === -->
@@ -1317,6 +1424,67 @@ body {
         </div>
         <div id="jrPurchaseHistory"></div>
       </div>
+    </div>
+
+    <!-- === 交友识人 === -->
+    <div class="jr-subpanel" id="jr-panel-friend">
+      <div class="jr-card">
+        <div class="jr-intro">
+          <strong>悄悄话：</strong>有些事不好跟别人说，没关系。对着这里想一想、写一写，只有你自己能看到。
+        </div>
+      </div>
+
+      <div class="jr-card jr-probe-card" id="jrProbe1">
+        <div class="jr-probe-header">
+          <span class="jr-probe-icon">⚡</span>
+          <span class="jr-probe-title">能量探针</span>
+        </div>
+        <div class="jr-probe-question">跟这个人玩完之后，你是更开心了还是更累了？</div>
+        <div class="jr-probe-hint">好的朋友像充电，不好的朋友像耗电。</div>
+        <div class="jr-probe-feel">
+          <button class="jr-feel-btn jr-feel-good" data-probe="1" data-feel="good" onclick="jrProbeFeel(this)">😊 开心</button>
+          <button class="jr-feel-btn jr-feel-ok" data-probe="1" data-feel="ok" onclick="jrProbeFeel(this)">😐 一般</button>
+          <button class="jr-feel-btn jr-feel-tired" data-probe="1" data-feel="tired" onclick="jrProbeFeel(this)">😞 很累</button>
+        </div>
+        <textarea class="jr-probe-note" id="jrProbeNote1" placeholder="写写你的想法（只有你自己能看到）..." oninput="jrProbeAutoSave()"></textarea>
+      </div>
+
+      <div class="jr-card jr-probe-card" id="jrProbe2">
+        <div class="jr-probe-header">
+          <span class="jr-probe-icon">🫂</span>
+          <span class="jr-probe-title">秘密探针</span>
+        </div>
+        <div class="jr-probe-question">你最难过的样子，他看见了会怎么样？</div>
+        <div class="jr-probe-hint">会帮你，还是假装没看见？会陪你，还是会笑话你？</div>
+        <div class="jr-probe-feel">
+          <button class="jr-feel-btn jr-feel-good" data-probe="2" data-feel="good" onclick="jrProbeFeel(this)">🤗 会帮我</button>
+          <button class="jr-feel-btn jr-feel-ok" data-probe="2" data-feel="ok" onclick="jrProbeFeel(this)">🤔 不确定</button>
+          <button class="jr-feel-btn jr-feel-tired" data-probe="2" data-feel="tired" onclick="jrProbeFeel(this)">😒 不理我</button>
+        </div>
+        <textarea class="jr-probe-note" id="jrProbeNote2" placeholder="写写你的想法（只有你自己能看到）..." oninput="jrProbeAutoSave()"></textarea>
+      </div>
+
+      <div class="jr-card jr-probe-card" id="jrProbe3">
+        <div class="jr-probe-header">
+          <span class="jr-probe-icon">🫱</span>
+          <span class="jr-probe-title">橡皮擦探针</span>
+        </div>
+        <div class="jr-probe-question">你不同意他的时候，他会怎么样？</div>
+        <div class="jr-probe-hint">会跟你讨论，还是生气？会说"那我就不跟你玩了"吗？</div>
+        <div class="jr-probe-feel">
+          <button class="jr-feel-btn jr-feel-good" data-probe="3" data-feel="good" onclick="jrProbeFeel(this)">👍 会讨论</button>
+          <button class="jr-feel-btn jr-feel-ok" data-probe="3" data-feel="ok" onclick="jrProbeFeel(this)">🤔 不确定</button>
+          <button class="jr-feel-btn jr-feel-tired" data-probe="3" data-feel="tired" onclick="jrProbeFeel(this)">😤 生气/不理我</button>
+        </div>
+        <textarea class="jr-probe-note" id="jrProbeNote3" placeholder="写写你的想法（只有你自己能看到）..." oninput="jrProbeAutoSave()"></textarea>
+      </div>
+
+      <div class="jr-card jr-probe-summary" id="jrProbeSummary" style="display:none">
+        <div class="jr-probe-summary-title">🤔 想一想</div>
+        <div class="jr-probe-summary-text">这个人是让你变得更好的人吗？</div>
+        <div class="jr-probe-summary-signal" id="jrProbeSignal"></div>
+      </div>
+
     </div>
 
   </div><!-- end view-family -->
@@ -2092,6 +2260,100 @@ function jrRenderPurchaseHistory() {
   `).join('') + '</div>';
 }
 
+// ── 交友识人：探针 ───────────────────────────────────
+let jrProbeFeels = [null, null, null]; // 0=good, 1=ok, 2=tired
+
+function jrProbeFeel(btn) {
+  const probeIdx = parseInt(btn.dataset.probe) - 1;
+  const feel = btn.dataset.feel;
+  const card = document.getElementById('jrProbe' + btn.dataset.probe);
+  
+  // Toggle
+  const wasSelected = btn.classList.contains('selected');
+  card.querySelectorAll('.jr-feel-btn').forEach(b => b.classList.remove('selected'));
+  if (wasSelected) {
+    jrProbeFeels[probeIdx] = null;
+  } else {
+    btn.classList.add('selected');
+    jrProbeFeels[probeIdx] = feel;
+  }
+  jrProbeSave();
+  jrProbeUpdateSummary();
+}
+
+function jrProbeAutoSave() { jrProbeSave(); }
+
+function jrProbeSave() {
+  const data = {
+    feels: jrProbeFeels,
+    notes: [
+      document.getElementById('jrProbeNote1')?.value || '',
+      document.getElementById('jrProbeNote2')?.value || '',
+      document.getElementById('jrProbeNote3')?.value || ''
+    ]
+  };
+  localStorage.setItem('friend_probe', JSON.stringify(data));
+}
+
+function jrProbeLoad() {
+  try {
+    const raw = localStorage.getItem('friend_probe');
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    jrProbeFeels = data.feels || [null, null, null];
+    // Restore notes
+    if (data.notes) {
+      for (let i = 0; i < 3; i++) {
+        const ta = document.getElementById('jrProbeNote' + (i + 1));
+        if (ta) ta.value = data.notes[i] || '';
+      }
+    }
+    // Restore feel buttons
+    for (let i = 0; i < 3; i++) {
+      const feel = jrProbeFeels[i];
+      if (feel) {
+        const card = document.getElementById('jrProbe' + (i + 1));
+        if (card) {
+          const btn = card.querySelector(`.jr-feel-btn.jr-feel-${feel}`);
+          if (btn) btn.classList.add('selected');
+        }
+      }
+    }
+    jrProbeUpdateSummary();
+  } catch { /* ignore */ }
+}
+
+function jrProbeUpdateSummary() {
+  const summary = document.getElementById('jrProbeSummary');
+  const signal = document.getElementById('jrProbeSignal');
+  const allAnswered = jrProbeFeels.every(f => f !== null);
+  
+  if (!allAnswered) {
+    summary.style.display = 'none';
+    return;
+  }
+  
+  summary.style.display = 'block';
+  
+  // Scoring: good=2, ok=1, tired=0
+  let score = 0;
+  jrProbeFeels.forEach(f => {
+    if (f === 'good') score += 2;
+    else if (f === 'ok') score += 1;
+  });
+  
+  if (score >= 5) {
+    signal.className = 'jr-probe-summary-signal good';
+    signal.textContent = '✅ 这个人很值得';
+  } else if (score >= 3) {
+    signal.className = 'jr-probe-summary-signal caution';
+    signal.textContent = '⚠️ 再观察观察';
+  } else {
+    signal.className = 'jr-probe-summary-signal warn';
+    signal.textContent = '🔴 可能要离远一点';
+  }
+}
+
 // ── Load family rules data ─────────────────────────────
 function jrLoadData() {
   try {
@@ -2104,6 +2366,7 @@ function jrLoadData() {
     jrPurchaseHistory = raw ? JSON.parse(raw) : [];
     jrRenderPurchaseHistory();
   } catch { jrPurchaseHistory = []; }
+  jrProbeLoad();
 }
 
 // ── Toast (use existing) ───────────────────────────────
