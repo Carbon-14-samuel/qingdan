@@ -26,6 +26,37 @@
 
 * { margin:0; padding:0; box-sizing:border-box; }
 
+/* ── Top-level view tabs ──────────────────────────────── */
+.view-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 14px;
+  background: var(--card);
+  border-radius: 12px;
+  padding: 4px;
+  box-shadow: var(--shadow);
+}
+.view-tab {
+  flex: 1;
+  padding: 10px 8px;
+  text-align: center;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  background: transparent;
+}
+.view-tab.active {
+  background: var(--accent);
+  color: #fff;
+}
+.view-tab:hover:not(.active) { color: var(--accent); }
+.view-panel { display: none; }
+.view-panel.active { display: block; }
+
 body {
   font-family: -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
   background: var(--bg);
@@ -813,11 +844,276 @@ body {
 @media (min-width: 1200px) {
   .add-bar { flex-wrap: nowrap; }
 }
+
+/* ── 家规练习 (scoped) ───────────────────────────────── */
+.jr-card {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 16px 14px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow);
+}
+.jr-intro {
+  font-size: 14px;
+  color: var(--text-light);
+  line-height: 1.6;
+  margin-bottom: 14px;
+  padding: 12px;
+  background: var(--accent-light);
+  border-radius: 10px;
+  border-left: 3px solid var(--accent);
+}
+.jr-intro strong { color: var(--accent); }
+
+/* Blame to action */
+.jr-sentence-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.jr-sentence-row label {
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.jr-sentence-row input {
+  flex: 1;
+  min-width: 100px;
+  padding: 10px 12px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  font-size: 14px;
+  color: var(--text);
+  background: #fff;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.jr-sentence-row input:focus { border-color: var(--accent); }
+.jr-preview {
+  padding: 12px;
+  background: var(--accent-light);
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text);
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+.jr-preview .jr-placeholder { color: var(--text-light); }
+.jr-preview .jr-blame { color: #dc2626; font-weight: 600; }
+.jr-preview .jr-action { color: #16a34a; font-weight: 600; }
+
+.jr-btn-save {
+  width: 100%;
+  padding: 12px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-top: 8px;
+}
+.jr-btn-save:active { transform: scale(0.98); }
+.jr-btn-save:disabled { background: var(--border); color: var(--text-lighter); }
+
+/* Family rules sub-tabs */
+.jr-subtabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 14px;
+  background: var(--card);
+  border-radius: 10px;
+  padding: 3px;
+  box-shadow: var(--shadow);
+}
+.jr-subtab {
+  flex: 1;
+  padding: 8px 6px;
+  text-align: center;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  background: transparent;
+}
+.jr-subtab.active {
+  background: var(--accent);
+  color: #fff;
+}
+.jr-subpanel { display: none; }
+.jr-subpanel.active { display: block; }
+
+/* Purchase */
+.jr-purchase-input {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.jr-purchase-input input {
+  padding: 10px 12px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  font-size: 14px;
+  color: var(--text);
+  background: #fff;
+  outline: none;
+}
+.jr-purchase-input input:focus { border-color: var(--accent); }
+.jr-purchase-input input::placeholder { color: #bbb; }
+
+.jr-q-item {
+  padding: 12px;
+  background: var(--accent-light);
+  border-radius: 10px;
+  margin-bottom: 14px;
+}
+.jr-q-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+.jr-q-num {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  line-height: 22px;
+  text-align: center;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 12px;
+  margin-right: 4px;
+}
+.jr-answer-btns { display: flex; gap: 6px; }
+.jr-answer-btn {
+  flex: 1;
+  padding: 10px 6px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: #fff;
+  color: var(--text);
+}
+.jr-answer-btn:active { transform: scale(0.97); }
+.jr-answer-btn.selected { border-color: transparent; color: #fff; }
+.jr-answer-btn.jr-yes.selected { background: #16a34a; border-color: #16a34a; }
+.jr-answer-btn.jr-maybe.selected { background: #f59e0b; border-color: #f59e0b; }
+.jr-answer-btn.jr-no.selected { background: #dc2626; border-color: #dc2626; }
+
+.jr-result-card {
+  display: none;
+  text-align: center;
+  padding: 20px 14px;
+}
+.jr-result-card.active { display: block; }
+.jr-result-icon { font-size: 40px; margin-bottom: 6px; }
+.jr-result-title { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+.jr-result-desc { font-size: 13px; color: var(--text-light); line-height: 1.6; margin-bottom: 12px; }
+.jr-result-item { font-size: 14px; color: var(--text); margin-bottom: 4px; }
+.jr-btn-restart {
+  padding: 10px 24px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* History common */
+.jr-history-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-light);
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.jr-history-count {
+  background: var(--accent-light);
+  color: var(--accent);
+  padding: 2px 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.jr-history-list { display: flex; flex-direction: column; gap: 6px; }
+.jr-history-item {
+  padding: 10px;
+  background: var(--accent-light);
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.jr-history-item .jr-h-date { font-size: 11px; color: var(--text-light); margin-bottom: 2px; }
+.jr-history-item .jr-h-blame { color: #dc2626; }
+.jr-history-item .jr-h-action { color: #16a34a; font-weight: 600; }
+.jr-history-empty {
+  text-align: center;
+  padding: 16px;
+  color: var(--text-light);
+  font-size: 13px;
+}
+
+.jr-ph-item {
+  padding: 10px;
+  background: var(--accent-light);
+  border-radius: 8px;
+  font-size: 13px;
+}
+.jr-ph-item .jr-ph-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2px;
+}
+.jr-ph-item .jr-ph-name { font-weight: 600; }
+.jr-ph-item .jr-ph-price { color: var(--text-light); font-size: 12px; }
+.jr-ph-item .jr-ph-date { font-size: 11px; color: var(--text-light); }
+.jr-ph-item .jr-ph-result {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  margin-top: 2px;
+}
+.jr-ph-result.jr-buy { background: #dcfce7; color: #16a34a; }
+.jr-ph-result.jr-wait { background: #fef3c7; color: #d97706; }
+.jr-ph-result.jr-skip { background: #fee2e2; color: #dc2626; }
 </style>
 </head>
 <body>
 
 <div class="container">
+
+  <!-- Top-level tabs -->
+  <div class="view-tabs">
+    <button class="view-tab active" onclick="switchView('checklist')">📋 每日清单</button>
+    <button class="view-tab" onclick="switchView('family')">🏠 家规练习</button>
+  </div>
+
+  <!-- ===== 每日清单 ===== -->
+  <div class="view-panel active" id="view-checklist">
+
   <!-- Header -->
   <div class="header">
     <div class="header-left">
@@ -925,7 +1221,107 @@ body {
     <button onclick="clearCompleted()">清除已完成</button>
     <button onclick="exportText()">导出文本</button>
   </div>
-</div>
+
+  </div><!-- end view-checklist -->
+
+  <!-- ===== 家规练习 ===== -->
+  <div class="view-panel" id="view-family">
+
+    <!-- sub-tabs -->
+    <div class="jr-subtabs">
+      <button class="jr-subtab active" onclick="jrSwitchTab('blame')">🔄 甩锅变任务</button>
+      <button class="jr-subtab" onclick="jrSwitchTab('purchase')">🛒 采购三问</button>
+    </div>
+
+    <!-- === 甩锅变任务 === -->
+    <div class="jr-subpanel active" id="jr-panel-blame">
+      <div class="jr-card">
+        <div class="jr-intro">
+          <strong>规矩：</strong>说了"都怪谁"，后面必须跟一句"所以我下次要干嘛"。把甩出去的锅变成任务领回来。
+        </div>
+
+        <div class="jr-sentence-row">
+          <label>都怪</label>
+          <input type="text" id="jrBlameInput" placeholder="老师出题难 / 同桌说话 / 天气不好..." oninput="jrUpdatePreview()">
+        </div>
+        <div class="jr-sentence-row">
+          <label>所以我下次要</label>
+          <input type="text" id="jrActionInput" placeholder="提前复习 / 早5分钟出门 / 带把伞..." oninput="jrUpdatePreview()">
+        </div>
+
+        <div class="jr-preview" id="jrPreview">
+          <span class="jr-placeholder">填完后这里会出现完整句子...</span>
+        </div>
+
+        <button class="jr-btn-save" id="jrSaveBlameBtn" disabled onclick="jrSaveBlame()">记下了</button>
+      </div>
+
+      <div class="jr-card">
+        <div class="jr-history-title">
+          <span>练习记录</span>
+          <span class="jr-history-count" id="jrBlameCount">0</span>
+        </div>
+        <div id="jrBlameHistory"></div>
+      </div>
+    </div>
+
+    <!-- === 采购三问 === -->
+    <div class="jr-subpanel" id="jr-panel-purchase">
+      <div class="jr-card">
+        <div class="jr-intro">
+          <strong>家规：</strong>超过零花钱 20% 的消费，先过三问。想清楚再掏钱。
+        </div>
+
+        <div id="jrStep0">
+          <div class="jr-purchase-input">
+            <input type="text" id="jrWantItem" placeholder="想买什么？">
+            <input type="text" id="jrWantPrice" placeholder="多少钱？（不填也行）">
+          </div>
+        </div>
+
+        <div id="jrAllQuestions" style="display:none">
+          <div class="jr-q-item">
+            <div class="jr-q-text"><span class="jr-q-num">1</span>不买它，你会不会很难受？</div>
+            <div class="jr-answer-btns">
+              <button class="jr-answer-btn jr-yes" data-q="0" data-a="2" onclick="jrPickAnswer(this)">会</button>
+              <button class="jr-answer-btn jr-maybe" data-q="0" data-a="1" onclick="jrPickAnswer(this)">不确定</button>
+              <button class="jr-answer-btn jr-no" data-q="0" data-a="0" onclick="jrPickAnswer(this)">不会</button>
+            </div>
+          </div>
+          <div class="jr-q-item">
+            <div class="jr-q-text"><span class="jr-q-num">2</span>买了它，下次看到更想要的没钱了，后不后悔？</div>
+            <div class="jr-answer-btns">
+              <button class="jr-answer-btn jr-yes" data-q="1" data-a="2" onclick="jrPickAnswer(this)">会后悔</button>
+              <button class="jr-answer-btn jr-maybe" data-q="1" data-a="1" onclick="jrPickAnswer(this)">不确定</button>
+              <button class="jr-answer-btn jr-no" data-q="1" data-a="0" onclick="jrPickAnswer(this)">不后悔</button>
+            </div>
+          </div>
+          <div class="jr-q-item">
+            <div class="jr-q-text"><span class="jr-q-num">3</span>买了之后，下周还想玩（用）吗？</div>
+            <div class="jr-answer-btns">
+              <button class="jr-answer-btn jr-yes" data-q="2" data-a="2" onclick="jrPickAnswer(this)">会</button>
+              <button class="jr-answer-btn jr-maybe" data-q="2" data-a="1" onclick="jrPickAnswer(this)">不确定</button>
+              <button class="jr-answer-btn jr-no" data-q="2" data-a="0" onclick="jrPickAnswer(this)">不会</button>
+            </div>
+          </div>
+          <button class="jr-btn-save" id="jrResultBtn" disabled onclick="jrShowResult()">看结果</button>
+        </div>
+
+        <div class="jr-result-card" id="jrStepResult"></div>
+      </div>
+
+      <div class="jr-card">
+        <div class="jr-history-title">
+          <span>评估记录</span>
+          <span class="jr-history-count" id="jrPurchaseCount">0</span>
+        </div>
+        <div id="jrPurchaseHistory"></div>
+      </div>
+    </div>
+
+  </div><!-- end view-family -->
+
+</div><!-- end container -->
 
 <!-- Preset manage modal -->
 <div class="preset-modal" id="presetModal">
@@ -1532,7 +1928,188 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 1800);
 }
 
+// ── View switching ─────────────────────────────────────
+function switchView(name) {
+  document.querySelectorAll('.view-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('view-' + name).classList.add('active');
+}
+
+// ── 家规练习：子Tab ───────────────────────────────────
+function jrSwitchTab(name) {
+  document.querySelectorAll('.jr-subtab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.jr-subpanel').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('jr-panel-' + name).classList.add('active');
+}
+
+// ── 家规练习：甩锅变任务 ──────────────────────────────
+let jrBlameHistory = [];
+
+function jrUpdatePreview() {
+  const blame = document.getElementById('jrBlameInput').value.trim();
+  const action = document.getElementById('jrActionInput').value.trim();
+  const preview = document.getElementById('jrPreview');
+  const btn = document.getElementById('jrSaveBlameBtn');
+  if (!blame && !action) {
+    preview.innerHTML = '<span class="jr-placeholder">填完后这里会出现完整句子...</span>';
+    btn.disabled = true;
+  } else {
+    preview.innerHTML = `都怪<span class="jr-blame"> ${blame || '...'} </span>，所以我下次要<span class="jr-action"> ${action || '...'} </span>。`;
+    btn.disabled = !blame || !action;
+  }
+}
+
+function jrSaveBlame() {
+  const blame = document.getElementById('jrBlameInput').value.trim();
+  const action = document.getElementById('jrActionInput').value.trim();
+  if (!blame || !action) return;
+  jrBlameHistory.unshift({
+    blame, action,
+    date: new Date().toLocaleString('zh-CN', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+  });
+  localStorage.setItem('blame_history', JSON.stringify(jrBlameHistory));
+  document.getElementById('jrBlameInput').value = '';
+  document.getElementById('jrActionInput').value = '';
+  jrUpdatePreview();
+  jrRenderBlameHistory();
+  showToast('记下了！锅变任务 ✓');
+}
+
+function jrRenderBlameHistory() {
+  const list = document.getElementById('jrBlameHistory');
+  document.getElementById('jrBlameCount').textContent = jrBlameHistory.length;
+  if (!jrBlameHistory.length) {
+    list.innerHTML = '<div class="jr-history-empty">还没有记录<br>下次说"都怪谁"的时候来练一下</div>';
+    return;
+  }
+  list.innerHTML = '<div class="jr-history-list">' + jrBlameHistory.map(h => `
+    <div class="jr-history-item">
+      <div class="jr-h-date">${h.date}</div>
+      <div>都怪<span class="jr-h-blame">${h.blame}</span>，所以我下次要<span class="jr-h-action">${h.action}</span>。</div>
+    </div>
+  `).join('') + '</div>';
+}
+
+// ── 家规练习：采购三问 ────────────────────────────────
+let jrPurchaseHistory = [];
+let jrAnswers = [null, null, null];
+
+document.addEventListener('DOMContentLoaded', function() {
+  const wantItem = document.getElementById('jrWantItem');
+  if (wantItem) {
+    wantItem.addEventListener('input', function() {
+      document.getElementById('jrAllQuestions').style.display = this.value.trim() ? 'block' : 'none';
+    });
+  }
+});
+
+function jrPickAnswer(btn) {
+  const qi = parseInt(btn.dataset.q);
+  const ai = parseInt(btn.dataset.a);
+  jrAnswers[qi] = ai;
+  btn.parentElement.querySelectorAll('.jr-answer-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  const wantItem = document.getElementById('jrWantItem');
+  const allDone = jrAnswers.every(a => a !== null) && wantItem && wantItem.value.trim();
+  document.getElementById('jrResultBtn').disabled = !allDone;
+}
+
+function jrShowResult() {
+  const item = document.getElementById('jrWantItem').value.trim();
+  const price = document.getElementById('jrWantPrice').value.trim();
+  const want1 = jrAnswers[0];
+  const regret = jrAnswers[1];
+  const want2 = jrAnswers[2];
+  const buyScore = want1 + want2 + (2 - regret);
+
+  let icon, title, desc, tag, tagClass;
+  if (buyScore >= 5) {
+    icon = '✅'; title = '可以买';
+    desc = '你是真的想要，也不是一时冲动。<br>拿了钱去签名吧。';
+    tag = '买入'; tagClass = 'jr-buy';
+  } else if (buyScore >= 3) {
+    icon = '⏸️'; title = '缓三天再说';
+    desc = '有些地方还不太确定。<br>三天后还想要，再来评估一次。';
+    tag = '缓一缓'; tagClass = 'jr-wait';
+  } else {
+    icon = '🛑'; title = '建议不买';
+    desc = '大概率是一时兴起。<br>摁住不要，这本事就是你自己的了。';
+    tag = '没买'; tagClass = 'jr-skip';
+  }
+
+  document.getElementById('jrAllQuestions').style.display = 'none';
+  document.getElementById('jrStep0').style.display = 'none';
+  const result = document.getElementById('jrStepResult');
+  result.classList.add('active');
+  result.innerHTML = `
+    <div class="jr-result-icon">${icon}</div>
+    <div class="jr-result-title">${title}</div>
+    <div class="jr-result-desc">${desc}</div>
+    <div class="jr-result-item">📝 ${item}${price ? ' · ' + price + '元' : ''}</div>
+    <div style="margin-top:14px">
+      <button class="jr-btn-restart" onclick="jrResetPurchase()">再评估一个</button>
+    </div>
+  `;
+
+  jrPurchaseHistory.unshift({
+    item, price, answers: [...jrAnswers],
+    result: tag, resultClass: tagClass,
+    date: new Date().toLocaleString('zh-CN', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+  });
+  localStorage.setItem('purchase_history', JSON.stringify(jrPurchaseHistory));
+  jrRenderPurchaseHistory();
+}
+
+function jrResetPurchase() {
+  document.getElementById('jrWantItem').value = '';
+  document.getElementById('jrWantPrice').value = '';
+  document.getElementById('jrStep0').style.display = 'block';
+  document.getElementById('jrAllQuestions').style.display = 'none';
+  document.getElementById('jrStepResult').classList.remove('active');
+  jrAnswers = [null, null, null];
+  document.querySelectorAll('.jr-answer-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('jrResultBtn').disabled = true;
+}
+
+function jrRenderPurchaseHistory() {
+  const list = document.getElementById('jrPurchaseHistory');
+  document.getElementById('jrPurchaseCount').textContent = jrPurchaseHistory.length;
+  if (!jrPurchaseHistory.length) {
+    list.innerHTML = '<div class="jr-history-empty">还没有记录<br>想买东西的时候来过三问</div>';
+    return;
+  }
+  list.innerHTML = '<div class="jr-history-list">' + jrPurchaseHistory.map(h => `
+    <div class="jr-ph-item">
+      <div class="jr-ph-top">
+        <span class="jr-ph-name">${h.item}</span>
+        <span class="jr-ph-price">${h.price ? h.price + '元' : '—'}</span>
+      </div>
+      <div class="jr-ph-date">${h.date}</div>
+      <span class="jr-ph-result ${h.resultClass}">${h.result}</span>
+    </div>
+  `).join('') + '</div>';
+}
+
+// ── Load family rules data ─────────────────────────────
+function jrLoadData() {
+  try {
+    const raw = localStorage.getItem('blame_history');
+    jrBlameHistory = raw ? JSON.parse(raw) : [];
+    jrRenderBlameHistory();
+  } catch { jrBlameHistory = []; }
+  try {
+    const raw = localStorage.getItem('purchase_history');
+    jrPurchaseHistory = raw ? JSON.parse(raw) : [];
+    jrRenderPurchaseHistory();
+  } catch { jrPurchaseHistory = []; }
+}
+
+// ── Toast (use existing) ───────────────────────────────
+
 init();
+jrLoadData();
 </script>
 
 </body>
